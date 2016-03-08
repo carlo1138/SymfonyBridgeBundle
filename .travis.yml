@@ -8,8 +8,14 @@ php:
 
 matrix:
     include:
-        - php: 5.5
-          env: COMPOSER_FLAGS="--prefer-lowest"
+        -
+            env: SYMFONY_VERSION=2.3.*
+        -
+            env: SYMFONY_VERSION=2.7.*
+        -
+            env: SYMFONY_VERSION=2.8.*
+        -
+            env: SYMFONY_VERSION=3.0.*
 
 before_install:
     - composer self-update
@@ -17,6 +23,7 @@ before_install:
     - wget http://get.sensiolabs.org/php-cs-fixer.phar -O php-cs-fixer.phar
 
 install:
+    - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
     - COMPOSER_ROOT_VERSION=dev-master composer update --prefer-source $COMPOSER_FLAGS
 
 script:
